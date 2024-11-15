@@ -49,29 +49,110 @@ public class gomokuGame {
             
             // Gathering player input
             if (inputting) {
+                // boolean retry = true;
+                // while(retry) {
+                //     System.out.print("Enter row and column (e.g., 0 1): ");
+                //     row = playerInput.nextInt();
+                //     col = playerInput.nextInt();
+                //     temp = playerInput.next();
+                //     // error checking, if 3 inputs, if > 9 or < 0, or if it's occupied.
+                //     if (temp != null) {
+                //         System.out.println("Please only input 2 numbers! Try again.");
+                //         retry = true;
+                //         continue;
+                //     } else if (row > 9 || col > 9 || row < 0 || col < 0) {
+                //         System.out.println("Out of reach! Input again. ");
+                //         retry = true;
+                //         continue;
+                //     } else if (board[row][col] > 0) {
+                //         System.out.println("Invalid move. Try Again.");
+                //         retry = true;
+                //         continue;
+                //     } else if (temp == null){
+                //         isPlayer2 = makeTurn(board, row, col, isPlayer1turn);
+                //         retry = false;
+                //     }        
+                // }
+                
                 boolean retry = true;
                 while(retry) {
                     System.out.print("Enter row and column (e.g., 0 1): ");
-                    row = playerInput.nextInt();
-                    col = playerInput.nextInt();
+                    if (playerInput.hasNextInt()) {
+                        row = playerInput.nextInt();
+                        System.out.println(row);
+                        if (playerInput.hasNextInt()) {
+                            col = playerInput.nextInt();
+                            System.out.println(col);
 
-                    if (row > 9 || col > 9 || row < 0 || col < 0) {
-                        System.out.println("Out of reach! Input again. ");
-                        retry = true;
-                        continue;
-                    } else if (board[row][col] > 0) {
-                        System.out.println("Invalid move. Try Again.");
-                        retry = true;
-                        continue;
-                    } else {
-                        isPlayer2 = makeTurn(board, row, col, isPlayer1turn);
-                        retry = false;
-                    }        
+                            // error checking. 1st: > 2 inputs
+                            if (playerInput.hasNextInt()) {
+                                System.out.println("Please input 2 numbers only! Try again.");
+                                continue;
+                            }
+                            // 2nd: Out of range
+                            if (row > 9 || row < 0 || col < 0 || col > 9) {
+                                System.out.println("Out of reach! Input again.");
+                                continue;
+                            }
+                            
+                            // 3rd: Occupied
+                            if (board[row][col] != 0) {
+                                System.out.println("Invalid move. Try Again.");
+                                continue;
+                            }
+                        } else {
+                            System.out.println("Please input at least 2 numbers ! Try again.");
+                            continue;
+                        }
+                    }
+                    // Make the move by whoever turn it is
+                    isPlayer2 = makeTurn(board, row, col, isPlayer1turn);
+                    retry = false;
                 }
-                if (isPlayer2) 
-                    isPlayer1turn = false;
-                else
-                    isPlayer1turn = true;
+                
+                // while (retry) {
+                //     System.out.print("Enter row and column (e.g., 0 1): ");
+                    
+                //     // Check if the first number is an integer
+                //     if (playerInput.hasNextInt()) {
+                //         row = playerInput.nextInt(); // Read the first integer
+                        
+                //         // Check if the second number is an integer
+                //         if (playerInput.hasNextInt()) {
+                //             col = playerInput.nextInt(); // Read the second integer
+            
+                //             // Check for any additional inputs
+                //             if (playerInput.hasNext()) {
+                //                 System.out.println("Please only input 2 numbers! Try again.");
+                //                 playerInput.nextLine(); // Clear the buffer
+                //                 continue; // Retry the input
+                //             }
+            
+                //             // Error checks
+                //             if (row < 0 || row > 9 || col < 0 || col > 9) {
+                //                 System.out.println("Out of reach! Input again.");
+                //                 playerInput.nextLine(); // Clear the buffer
+                //                 continue; // Retry the input
+                //             } else if (board[row][col] > 0) {
+                //                 System.out.println("Invalid move. Try Again.");
+                //                 playerInput.nextLine(); // Clear the buffer
+                //                 continue; // Retry the input
+                //             } else {
+                //                 isPlayer2 = makeTurn(board, row, col, isPlayer1turn);
+                //                 retry = false; // Valid input; exit the loop
+                //             }
+                //         } else {
+                //             System.out.println("Please only input 2 numbers! Try again.");
+                //             playerInput.nextLine(); // Clear the buffer
+                //         }
+                //     } else {
+                //         System.out.println("Invalid input. Please enter numbers only.");
+                //         playerInput.nextLine(); // Clear the buffer
+                //     }
+                // }
+
+                // if isPlayer2, then is player 2's turn. Else, !isPlayer2, meaning its isPlayer1turn.
+                isPlayer1turn = !isPlayer2;
                 displayTable = true;
                 playing = true;
                 inputting = false;
